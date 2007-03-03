@@ -61,4 +61,9 @@ namespace Dom
 	}
 	*/
 
+	DOMImplementation::DOMImplementation()
+	{
+		LEAK_TRACE
+	}
+
 }

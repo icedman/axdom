@@ -20,6 +20,7 @@ http://code.google.com/u/m4rvin2005/
 #define AX_EVENT
 
 #include <dom/domstring.h>
+#include <dom/eventgroup.h>
 #include <dom/eventtarget.h>
 
 namespace Dom
@@ -30,7 +31,9 @@ namespace Dom
 
 		Event() : isCancelled(0), 
 			target(0),
-			currentTarget(0)
+			currentTarget(0),
+			eventGroupId(0),
+			eventTypeId(0)
 		{}
 
 		void stopPropagation();
@@ -38,6 +41,8 @@ namespace Dom
 		void initEvent(const DOMString* type, bool canBubbleArg, bool cancellableArg);
 
 		DOMString* getType() { return DOMSTR type.c_str(); }
+		virtual const EventNames* getEventNames(const DOMString* type) { return 0; }
+		virtual const EventNames* getEventNames(unsigned int type) { return 0; }
 
 		std::string type;
 		EventTarget *target;
@@ -46,6 +51,9 @@ namespace Dom
 		bool bubbles;
 		bool cancellable;
 		bool isCancelled;
+
+		unsigned int eventGroupId;
+		unsigned int eventTypeId;
 
 	};
 }

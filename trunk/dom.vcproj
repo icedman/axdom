@@ -4,6 +4,7 @@
 	Version="8.00"
 	Name="dom"
 	ProjectGUID="{83DF4094-1BEF-4D95-83C7-C087F7BB6EAB}"
+	RootNamespace="dom"
 	>
 	<Platforms>
 		<Platform
@@ -37,7 +38,8 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				AdditionalIncludeDirectories="../, extern"
-				PreprocessorDefinitions="DOM_DLL"
+				PreprocessorDefinitions="DOM_DLL, DEBUG"
+				RuntimeLibrary="1"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -52,6 +54,9 @@
 				Name="VCLinkerTool"
 				AdditionalDependencies="libexpat.lib"
 				AdditionalLibraryDirectories="extern/lib"
+				IgnoreAllDefaultLibraries="false"
+				IgnoreDefaultLibraryNames=""
+				GenerateDebugInformation="true"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -261,10 +266,6 @@
 					>
 				</File>
 				<File
-					RelativePath=".\domcfg.h"
-					>
-				</File>
-				<File
 					RelativePath=".\domimpl.h"
 					>
 				</File>
@@ -318,6 +319,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\eventgroup.h"
+				>
+			</File>
+			<File
 				RelativePath=".\eventtarget.cpp"
 				>
 			</File>
@@ -334,6 +339,26 @@
 				>
 			</File>
 		</Filter>
+		<Filter
+			Name="explorer"
+			>
+			<File
+				RelativePath=".\safenode.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\safenode.h"
+				>
+			</File>
+		</Filter>
+		<File
+			RelativePath=".\dom.h"
+			>
+		</File>
+		<File
+			RelativePath=".\domcfg.h"
+			>
+		</File>
 	</Files>
 	<Globals>
 	</Globals>

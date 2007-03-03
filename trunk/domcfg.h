@@ -25,4 +25,11 @@ http://code.google.com/u/m4rvin2005/
 #define DOM_CLASS_EXPORT __declspec(dllimport)
 #endif
 
+#ifdef DEBUG
+#include <crtdbg.h>
+#define LEAK_TRACE { _CrtSetDbgFlag(_CrtSetDbgFlag(_CRTDBG_REPORT_FLAG) | _CRTDBG_LEAK_CHECK_DF); }
+#else
+#define LEAK_TRACE
+#endif
+
 #endif

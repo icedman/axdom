@@ -19,13 +19,31 @@ http://code.google.com/u/m4rvin2005/
 #include <dom/domnode.h>
 #include <dom/eventtarget.h>
 #include <dom/event.h>
+#include <dom/mutationevent.h>
 
 namespace Dom
 {
+
+#define CHECK_EVENT_CLASS(_eventClass) \
+if (1) {\
+	_eventClass evt;\
+	const EventNames *names = evt.getEventNames(type);\
+	if (names)\
+	{\
+		eventGroupId = names->groupId;\
+		eventTypeId = names->typeId;\
+		return;\
+	}\
+}
+
 	EventListenerItem::EventListenerItem(const DOMString* type, EventListener *listener)
 	{
 		eventType = (DOMCHAR*) type;
 		SetData(listener);
+		eventGroupId = 0;
+		eventTypeId = 0;
+
+		CHECK_EVENT_CLASS(MutationEvent)
 	}
 
 	EventTarget::EventTarget()
@@ -63,7 +81,16 @@ namespace Dom
 		while(li)
 		{
 			EventListener *eventListener = (EventListener*)li->GetData();
-			if (stricmp((DOMCHAR*)li->eventType.c_str(), (DOMCHAR*) evt->getType()) == 0)
+			bool isEvent = false;
+			
+			if (evt->eventGroupId && li->eventGroupId)
+			{
+				isEvent = (evt->eventGroupId == li->eventGroupId && evt->eventTypeId == li->eventTypeId);
+			} else {
+				isEvent = (stricmp((DOMCHAR*)li->eventType.c_str(), (DOMCHAR*) evt->getType()) == 0);
+			}
+
+			if (isEvent)
 			{
 				eventListener->handleEvent(evt);
 				if (evt->isCancelled)

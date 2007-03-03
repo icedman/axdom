@@ -17,9 +17,10 @@ http://code.google.com/u/m4rvin2005/
 */
 
 #include <dom/domnode.h>
+#include <dom/domtext.h>
 #include <dom/document.h>
 #include <dom/characterdata.h>
-#include "mutationevent.h"
+#include <dom/mutationevent.h>
 
 namespace Dom
 {
@@ -30,6 +31,16 @@ namespace Dom
 
 	const DOMString* DOMNode::getNodeValue()
 	{
+		if (!nodeValue.size())
+		{
+			DOMText *text = (DOMText*) getFirstChild();
+			if (text)
+			{
+				if (text->getNodeType() == DOMNode::TEXT_NODE)
+					return text->getNodeValue();
+			}
+		}
+
 		return (const DOMString*)nodeValue.c_str();
 	}
 
@@ -180,7 +191,8 @@ namespace Dom
 			if (1)
 			{
 				MutationEvent me;
-				me.initMutationEvent(DOMSTR "nodeInserted", true, true, this, DOMSTR"", newChild->getNodeName(),newChild->getNodeValue(), MUTATION_ADDITION);
+				me.initMutationEvent(MutationEvent::NODE_INSERTED, true, true, this, DOMSTR"",
+					newChild->getNodeName(),newChild->getNodeValue(), MutationEvent::MUTATION_ADDITION);
 				me.target = this;
 				dispatchEvent(&me);
 			}
@@ -206,7 +218,8 @@ namespace Dom
 			if (1)
 			{
 				MutationEvent me;
-				me.initMutationEvent(DOMSTR "nodeRemoved", true, true, this, DOMSTR"", oldChild->getNodeName(), oldChild->getNodeValue(), MUTATION_REMOVAL);
+				me.initMutationEvent(MutationEvent::NODE_REMOVED, true, true, this, DOMSTR"",
+					oldChild->getNodeName(), oldChild->getNodeValue(), MutationEvent::MUTATION_REMOVAL);
 				me.target = this;
 				dispatchEvent(&me);
 			}
@@ -227,7 +240,8 @@ namespace Dom
 			if (1)
 			{
 				MutationEvent me;
-				me.initMutationEvent(DOMSTR "nodeInserted", true, true, this, DOMSTR"", newChild->getNodeName(),newChild->getNodeValue(), MUTATION_ADDITION);
+				me.initMutationEvent(MutationEvent::NODE_INSERTED, true, true, this, DOMSTR"",
+					newChild->getNodeName(),newChild->getNodeValue(), MutationEvent::MUTATION_ADDITION);
 				me.target = this;
 				dispatchEvent(&me);
 			}
