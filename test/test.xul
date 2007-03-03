@@ -1,0 +1,115 @@
+<!-- ashlar sample document -->
+<widget>
+	<stylesheet src="style.xul"/>
+	<window id="tinyWindow" name="tinyWindow" x="400" width="400">
+		<style>
+			<margin>
+				<left>20</left>
+				<top>20</top>
+			</margin>
+		</style>
+		<image src="res/clouds.png" position="absolute" x="0" y="-30"/>
+		<button label="weather" width="150" height="50">
+			<onClick>
+				<![CDATA[
+
+var xml = new XmlHttpRequest();
+xml.open("GET","localhost/sample.xul");
+xml.send();
+
+this.parent.appendChild(xml.responseXml.firstChild);
+
+]]>
+				hello world text text text
+			</onClick>
+		</button>
+hello world text text text
+hello world text text text
+		<hbox/>
+	</window>
+	<window name="mainWindow" x="400" y="200" width="600" height="300" align="right">
+		<style>
+			<fill>
+				<color>#ffffff</color>
+			</fill>
+		</style>
+		<button flex="0" label="button abc" height="40">
+			<onClick>
+				<![CDATA[
+
+nl = widget.getElementsByTagName('button');
+for(i=0; i<nl.length();i++)
+{
+nl.item(i).setAttribute('label', 'button abc ' + i);
+echo(nl.item(i).nodeName + ' ' + i);
+}
+
+]]>
+			</onClick>
+		</button>
+		<button label="button b" height="40">
+			<onClick>
+				<![CDATA[
+
+nl = widget.getElementsByTagName('appended');
+for(i=0; i<nl.length();i++)
+{
+//nl.item(i).setAttribute('label', 'abc');
+echo(nl.item(i).nodeName + ' ' + i);
+}
+
+]]>
+			</onClick>
+		</button>
+		<vbox flex="1" align="right">
+			<style>
+				<padding>
+					<bottom>30</bottom>
+				</padding>
+			</style>
+			<hbox>
+				<label flex="0">hello world</label>
+				<label flex="0">ashlar</label>
+			</hbox>
+			<hbox flex="1" align="center" valign="middle">
+				<box>
+					<button label="button"/>
+					<button label="button d" class="classed"/>
+				</box>
+			</hbox>
+			<button label="button e">
+				<style name=":pressed">
+					<font color="#505050"/>
+					<fill type="linear" x="0" y="0" x2="0" y2="255">
+						<color offset="0">#d5d5d5</color>
+						<color offset="150">#c0c0c0</color>
+						<color offset="255">#e5e5e5</color>
+					</fill>
+				</style>
+				<onClick>
+					<![CDATA[
+
+function test()
+{
+	return "test";
+}
+
+var btn = widget.createElement('button');
+btn.setAttribute('label', 'hello append');
+btn.setAttribute('onClick', 'echo(123)');
+this.parent.appendChild(btn);
+//this.parent.insertBefore(btn, this);
+
+var child = this.parent.firstChild;
+while(child)
+{
+	echo(child.nodeName);
+	child = child.nextSibling;
+}
+
+]]>
+				</onClick>
+			</button>
+		</vbox>
+	</window>
+</widget>
