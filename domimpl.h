@@ -37,6 +37,8 @@ namespace Dom
 		const DOMString* qualifiedName,
 		DocumentType* doctype);
 		*/
+
+		DOMImplementation();
 	}; 
 
 }

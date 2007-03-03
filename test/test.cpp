@@ -16,19 +16,8 @@ Marvin Sanchez
 code.google.com/p/ashlar
 */
 
-#include <dom/domimpl.h>
-#include <dom/domstring.h>
-#include <dom/document.h>
-#include <dom/element.h>
-#include <dom/attribute.h>
-#include <dom/domparser.h>
-#include <dom/domwriter.h>
-#include <dom/eventtarget.h>
-#include <dom/mutationevent.h>
-#include <dom/event.h>
+#include <dom/dom.h>
 #include <stdio.h>
-
-#include <windows.h>
 
 void Dump(Dom::DOMNode *node);
 void DumpNodeList(Dom::NodeList *nl);
@@ -91,6 +80,8 @@ public:
 
 int main()
 {
+	LEAK_TRACE
+
 	Dom::DOMImplementation domimpl;
 	if (!domimpl.hasFeature(DOMSTR "core", DOMSTR "2"))
 	{
@@ -99,6 +90,9 @@ int main()
 
 	Dom::Document *doc = new Dom::Document();
 	Dom::EventTarget *et;
+	Dom::Event evt;
+
+	evt.initEvent(DOMSTR "myevent", true, true);
 
 	MyListener my;
 
@@ -108,7 +102,7 @@ int main()
 
 	Dom::Parser parser;
 
-	DWORD tm = timeGetTime();
+	//DWORD tm = timeGetTime();
 	parser.initialize(doc);
 
 	FILE *fp = fopen("test.xul", "r");
@@ -127,30 +121,30 @@ int main()
 	parser.shutdown();
 
 	doc->normalize();
+	doc->getFirstChild()->addEventListener(DOMSTR "myevent", &my, true);
 
 	Dom::Writer writer;
 	writer.write("c:\\temp.xul", doc);
 
-	printf(">");
-	for(int i=0;i<0;i++)
+	Dom::NodeList *nl = doc->getElementsByTagName(DOMSTR "button");
+	if (nl->getLength())
 	{
-		Dom::NodeList *nl = doc->getElementsByTagName(DOMSTR "button");
-		if (nl->getLength())
-		{
-			/*
-			Dom::DOMNode *n = nl->item(0);
-			n->getParentNode()->removeChild(n);
-			n->release();
-			*/
-		}
-		//printf("%d\n", nl->getLength());
-		nl->release();
+		Dom::DOMNode *n = nl->item(0);
+		n->getParentNode()->removeChild(n);
+		n->release();
 	}
+	printf("buttons %d\n", nl->getLength());
+	nl->release();
+
+	Dom::SafeNode snode(doc);
+	Dom::SafeNode *smargin = snode.getElement("widget")->getElement("window")->getElement("style")->getElement("margin");
+	printf("left: %s\n", smargin->getElement("left")->getNodeValue());
 
 	//Dump(doc);
+	doc->getFirstChild()->dispatchEvent(&evt);
 	doc->release();
 
-	printf("%d\n", timeGetTime() - tm);
+	//printf("%d\n", timeGetTime() - tm);
 
 	return 0;
 }

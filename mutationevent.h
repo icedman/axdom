@@ -24,21 +24,27 @@ http://code.google.com/u/m4rvin2005/
 
 namespace Dom
 {
-	const unsigned short MUTATION_ADDITION = 1;
-	const unsigned short MUTATION_MODIFICATION = 2;
-	const unsigned short MUTATION_REMOVAL = 3;
-
-	const unsigned short SUBTREE_MODIFIED = 0;
-	const unsigned short NODE_INSERTED		= 1;
-	const unsigned short NODE_REMOVED		= 2;
-	const unsigned short NODE_INSERTED_TO_DOCUMENT = 3;
-	const unsigned short NODE_REMOVED_FROM_DOCUMENT = 4;
-	const unsigned short ATTRIBUTE_MODIFIED = 5;
-	const unsigned short CHARACTER_DATA_MODIFIED = 6;
-
 	class MutationEvent : public Event
 	{
 	public:
+
+		enum MutationEventChange
+		{
+			MUTATION_ADDITION = 1,
+			MUTATION_MODIFICATION = 2,
+			MUTATION_REMOVAL = 3,
+		};
+
+		enum MutationEventType
+		{
+			SUBTREE_MODIFIED = 0,
+			NODE_INSERTED = 1,
+			NODE_REMOVED = 2,
+			NODE_INSERTED_TO_DOCUMENT = 3,
+			NODE_REMOVED_FROM_DOCUMENT = 4,
+			ATTRIBUTE_MODIFIED = 5,
+			CHARACTER_DATA_MODIFIED = 6,
+		};
 
 		void initMutationEvent(
 			const DOMString* eventTypeArg, 
@@ -49,6 +55,19 @@ namespace Dom
 			const DOMString* newValueArg, 
 			const DOMString* attrNameArg, 
 			unsigned short attrChangeArg);
+
+		void initMutationEvent(
+			unsigned int eventTypeIdArg, 
+			bool canBubbleArg, 
+			bool cancellableArg, 
+			DOMNode *relatedNodeArg, 
+			const DOMString* prevValueArg, 
+			const DOMString* newValueArg, 
+			const DOMString* attrNameArg, 
+			unsigned short attrChangeArg);
+
+		virtual const EventNames* getEventNames(const DOMString* type);
+		virtual const EventNames* getEventNames(unsigned int type);
 
 		DOMNode *relatedNode;
 		std::string prevValue; 

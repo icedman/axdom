@@ -37,6 +37,8 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				AdditionalIncludeDirectories="../../"
+				PreprocessorDefinitions="DEBUG"
+				RuntimeLibrary="1"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -141,10 +143,6 @@
 	<References>
 	</References>
 	<Files>
-		<File
-			RelativePath=".\ashlar.xul"
-			>
-		</File>
 		<File
 			RelativePath=".\test.cpp"
 			>

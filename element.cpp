@@ -17,8 +17,8 @@ http://code.google.com/u/m4rvin2005/
 */
 
 #include <dom/element.h>
-#include "mutationevent.h"
 #include <dom/attribute.h>
+#include <dom/mutationevent.h>
 
 namespace Dom
 {
@@ -63,22 +63,23 @@ namespace Dom
 
 	Attribute* Element::setAttributeNode(Attribute *newAttr)
 	{
-		unsigned short mod = MUTATION_ADDITION;
+		unsigned short mod = MutationEvent::MUTATION_ADDITION;
 
 		std::string prev;
 		Attribute *attr = (Attribute*)getAttributeNode(newAttr->getNodeName());
 		if (attr)
 		{
-			mod = MUTATION_MODIFICATION;
+			mod = MutationEvent::MUTATION_MODIFICATION;
 			prev = (DOMCHAR*) attr->getNodeValue();
 		}
 
-		// if node->nodeValue == null (removal)
+		// if MUTATION_REMOVEAL
 
 		if (1)
 		{
 			MutationEvent me;
-			me.initMutationEvent(DOMSTR "attributeModified", true, true, this, DOMSTR prev.c_str(), newAttr->getNodeValue(), newAttr->getNodeName(), mod);
+			me.initMutationEvent(MutationEvent::ATTRIBUTE_MODIFIED, true, true, this, DOMSTR prev.c_str(),
+				newAttr->getNodeValue(), newAttr->getNodeName(), mod);
 			dispatchEvent(&me);
 		}
 

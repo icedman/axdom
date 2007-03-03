@@ -20,6 +20,7 @@ http://code.google.com/u/m4rvin2005/
 #define AX_EVENTTARGET
 
 #include <dom/domstring.h>
+#include <dom/eventtarget.h>
 #include <shared/list.h>
 
 #include <string>
@@ -39,6 +40,9 @@ namespace Dom
 	public:
 		EventListenerItem(const DOMString* type, EventListener *listener);
 		std::string eventType;
+
+		unsigned int eventGroupId;
+		unsigned int eventTypeId;
 	};
 
 	class EventListenerList : public Shared::List<EventListenerItem, EventListener> {};
@@ -55,15 +59,11 @@ namespace Dom
 		EventTarget();
 		~EventTarget();
 
-		void setEventNameId(unsigned int tagId);
-		unsigned int getEventNameId() { return eventNameId; }
 		void freeListeners();
 
 	private:
 		EventListenerItem* findEventListener(const DOMString* type, EventListener* listener);
 		EventListenerList listeners;
-
-		unsigned int eventNameId;
 	};
 }
 
